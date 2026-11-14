@@ -32,3 +32,10 @@ build/
 ### VS Code ###
 .vscode/
 data/
+.env
+.env.*
+!.env.example
+Software Engineer - Assignment.pdf
+assignment-1.png
+assignment-2.png
+assignment-3.png

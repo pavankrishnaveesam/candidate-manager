@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: candidate-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-candidates}
+      POSTGRES_USER: ${POSTGRES_USER:-candidate}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - candidate-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-candidate} -d ${POSTGRES_DB:-candidates}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  candidate-postgres-data:
+    external: true
+    name: candidate-postgres-data
