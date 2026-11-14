@@ -91,6 +91,7 @@ public class CandidateService {
 
     private void populate(Candidate candidate, CandidateRequest request, CandidateStatus defaultStatus) {
         candidate.setFullName(request.fullName().trim());
+        candidate.setCurrentRole(request.currentRole().trim());
         candidate.setEmail(normalizeEmail(request.email()));
         candidate.setPhone(request.phone());
         candidate.setSkills(request.skills());
@@ -107,6 +108,7 @@ public class CandidateService {
         return new CandidateResponse(
                 candidate.getId(),
                 candidate.getFullName(),
+                candidate.getCurrentRole(),
                 candidate.getEmail(),
                 candidate.getPhone(),
                 candidate.getSkills(),

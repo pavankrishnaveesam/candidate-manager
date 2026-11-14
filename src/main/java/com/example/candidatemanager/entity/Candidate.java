@@ -34,6 +34,10 @@ public class Candidate {
     private String fullName;
 
     @NotBlank
+    @Column(name = "role_title", nullable = false)
+    private String currentRole;
+
+    @NotBlank
     @Email
     @Column(nullable = false, unique = true)
     private String email;
@@ -49,7 +53,7 @@ public class Candidate {
     private String location;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     private CandidateStatus status = CandidateStatus.APPLIED;
 
     @CreationTimestamp

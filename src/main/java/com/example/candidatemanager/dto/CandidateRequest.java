@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Pattern;
 
 public record CandidateRequest(
         @NotBlank String fullName,
+        @NotBlank String currentRole,
         @NotBlank @Email String email,
         @Pattern(
                 regexp = "^\\+?[0-9][0-9 ()-]{6,19}$",

@@ -1,6 +1,7 @@
 package com.example.candidatemanager.controller;
 
 import com.example.candidatemanager.dto.CandidateRequest;
+import com.example.candidatemanager.dto.CandidatePageResponse;
 import com.example.candidatemanager.dto.CandidateResponse;
 import com.example.candidatemanager.entity.CandidateStatus;
 import com.example.candidatemanager.service.CandidateService;
@@ -59,7 +60,7 @@ public class CandidateController {
     }
 
     @GetMapping
-    public Page<CandidateResponse> search(
+    public CandidatePageResponse search(
             @RequestParam(required = false) String q,
             @RequestParam(required = false) List<String> skill,
             @RequestParam(required = false) Integer minExperience,
@@ -71,7 +72,8 @@ public class CandidateController {
             @RequestParam(defaultValue = "createdAt,desc") String[] sort
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(parseSort(sort)));
-        return candidateService.search(q, skill, minExperience, maxExperience, location, status, pageable);
+        return CandidatePageResponse.from(
+                candidateService.search(q, skill, minExperience, maxExperience, location, status, pageable));
     }
 
     private Sort.Order parseSort(String[] sort) {

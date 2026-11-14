@@ -33,7 +33,7 @@ class CandidateServiceTest {
     @Test
     void createDefaultsMissingStatusAndNormalizesEmail() {
         CandidateRequest request = new CandidateRequest(
-                "Ada Lovelace", "ADA@EXAMPLE.COM", "+91 9876543210", "Java, SQL", 5, "Remote", null);
+                "Ada Lovelace", "Software Engineer", "ADA@EXAMPLE.COM", "+91 9876543210", "Java, SQL", 5, "Remote", null);
         when(candidateRepository.findByEmailIgnoreCase("ada@example.com")).thenReturn(Optional.empty());
         when(candidateRepository.save(any(Candidate.class))).thenAnswer(invocation -> {
             Candidate candidate = invocation.getArgument(0);
@@ -57,7 +57,7 @@ class CandidateServiceTest {
         when(candidateRepository.findByEmailIgnoreCase("ada@example.com")).thenReturn(Optional.of(existingCandidate));
 
         CandidateRequest request = new CandidateRequest(
-                "Ada Lovelace", "ada@example.com", null, "Java", 5, "Remote", CandidateStatus.APPLIED);
+                "Ada Lovelace", "Software Engineer", "ada@example.com", null, "Java", 5, "Remote", CandidateStatus.APPLIED);
 
         assertThatThrownBy(() -> candidateService.create(request))
                 .isInstanceOf(DuplicateResourceException.class)

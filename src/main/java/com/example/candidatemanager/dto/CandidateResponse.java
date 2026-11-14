@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 public record CandidateResponse(
         Long id,
         String fullName,
+        String currentRole,
         String email,
         String phone,
         String skills,

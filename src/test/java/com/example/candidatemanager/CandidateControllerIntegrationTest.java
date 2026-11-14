@@ -209,6 +209,7 @@ class CandidateControllerIntegrationTest {
         String body = """
                 {
                   "fullName": "%s",
+                  "currentRole": "Software Engineer",
                   "email": "%s",
                   "phone": "+1 415 555 0101",
                   "skills": "%s",
@@ -236,6 +237,7 @@ class CandidateControllerIntegrationTest {
         return """
                 {
                   "fullName": "%s",
+                  "currentRole": "Software Engineer",
                   "email": "%s",
                   "phone": "+1 415 555 0101",
                   "skills": "%s",
