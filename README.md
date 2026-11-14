@@ -11,6 +11,8 @@ Spring Boot API for creating, viewing, updating, deleting, searching, and filter
 
 The `dev` profile is the default. Flyway creates the schema, and the development initializer adds candidates when the table is empty. The application sets its database session timezone to UTC for PostgreSQL compatibility on Windows. Set `APP_SEED_ENABLED=false` to skip seed data.
 
+The React dashboard at `http://localhost:5173` is allowed by default. Add comma-separated origins in `CORS_ALLOWED_ORIGINS` when using another client URL.
+
 ## Test
 
 Run `./mvnw.cmd verify`. This runs tests against an isolated in-memory H2 database, generates the JaCoCo report, and enforces 90% line coverage for executable application code. Tests never modify PostgreSQL.
