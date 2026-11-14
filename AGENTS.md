@@ -2,7 +2,7 @@
 
 ## 1. Project Overview & Stack
 
-- **Language & Framework:** Java 21, Spring Boot 3.x, Apache Maven (`pom.xml`).
+- **Language & Framework:** Java 21, Spring Boot 4.1.2, Apache Maven (`pom.xml`).
 - **Database:** File-based H2 (`jdbc:h2:file:./data/candidatesdb`) for zero-config persistence across restarts, using Spring Data JPA + Hibernate.
 - **Libraries:** Spring Web, Spring Data JPA, Jakarta Bean Validation (`spring-boot-starter-validation`), Lombok, JUnit 5, Mockito, MockMvc.
 - **No Spring Security:** Keep endpoints open for effortless evaluator testing.
