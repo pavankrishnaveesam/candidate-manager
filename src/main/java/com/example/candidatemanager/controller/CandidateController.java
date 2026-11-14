@@ -6,6 +6,7 @@ import com.example.candidatemanager.entity.CandidateStatus;
 import com.example.candidatemanager.service.CandidateService;
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.util.Set;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 public class CandidateController {
+
+    private static final Set<String> SORTABLE_PROPERTIES = Set.of(
+            "id", "fullName", "email", "experienceYears", "location", "status", "createdAt", "updatedAt");
 
     private final CandidateService candidateService;
 
@@ -71,7 +75,10 @@ public class CandidateController {
     }
 
     private Sort.Order parseSort(String[] sort) {
-        if (sort.length != 2 || !(sort[1].equalsIgnoreCase("asc") || sort[1].equalsIgnoreCase("desc"))) {
+        if (sort.length != 2
+                || sort[0].isBlank()
+                || !SORTABLE_PROPERTIES.contains(sort[0])
+                || !(sort[1].equalsIgnoreCase("asc") || sort[1].equalsIgnoreCase("desc"))) {
             throw new IllegalArgumentException("sort must use the format property,asc or property,desc");
         }
         return new Sort.Order(Sort.Direction.fromString(sort[1]), sort[0]);
