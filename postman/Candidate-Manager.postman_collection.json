@@ -1,0 +1,22 @@
+{
+  "info": {
+    "name": "Candidate Manager",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [{ "key": "baseUrl", "value": "http://localhost:8080/api/v1" }],
+  "item": [
+    {
+      "name": "Create candidate",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"fullName\": \"Sophia Chen\",\n  \"currentRole\": \"Senior Product Designer\",\n  \"email\": \"sophia.chen@example.com\",\n  \"phone\": \"+1 415 555 0101\",\n  \"skills\": \"UI/UX, Figma, User Research\",\n  \"experienceYears\": 7,\n  \"location\": \"San Francisco\",\n  \"status\": \"INTERVIEW\"\n}" },
+        "url": "{{baseUrl}}/candidates"
+      }
+    },
+    { "name": "List and filter candidates", "request": { "method": "GET", "url": "{{baseUrl}}/candidates?skill=figma&skill=java&minExperience=3&page=0&size=20&sort=createdAt,desc" } },
+    { "name": "Get candidate", "request": { "method": "GET", "url": "{{baseUrl}}/candidates/1" } },
+    { "name": "Update candidate", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"fullName\": \"Sophia Chen\",\n  \"currentRole\": \"Lead Product Designer\",\n  \"email\": \"sophia.chen@example.com\",\n  \"skills\": \"UI/UX, Figma\",\n  \"experienceYears\": 8,\n  \"location\": \"San Francisco\",\n  \"status\": \"OFFERED\"\n}" }, "url": "{{baseUrl}}/candidates/1" } },
+    { "name": "Delete candidate", "request": { "method": "DELETE", "url": "{{baseUrl}}/candidates/1" } }
+  ]
+}
