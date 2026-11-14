@@ -6,6 +6,7 @@ import com.example.candidatemanager.entity.CandidateStatus;
 import com.example.candidatemanager.service.CandidateService;
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -56,7 +57,7 @@ public class CandidateController {
     @GetMapping
     public Page<CandidateResponse> search(
             @RequestParam(required = false) String q,
-            @RequestParam(required = false) String skill,
+            @RequestParam(required = false) List<String> skill,
             @RequestParam(required = false) Integer minExperience,
             @RequestParam(required = false) Integer maxExperience,
             @RequestParam(required = false) String location,

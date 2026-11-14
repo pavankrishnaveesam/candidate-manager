@@ -84,6 +84,24 @@ class CandidateControllerIntegrationTest {
                 .andExpect(jsonPath("$.content[0].email").value("ada@example.com"));
     }
 
+    @Test
+    void searchMatchesAnySelectedSkill() throws Exception {
+        mockMvc.perform(post("/api/v1/candidates")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(candidateJson("ada@example.com", "Java, SQL", 5)));
+        mockMvc.perform(post("/api/v1/candidates")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(candidateJson("grace@example.com", "Figma", 10)));
+        mockMvc.perform(post("/api/v1/candidates")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(candidateJson("linus@example.com", "C", 15)));
+
+        mockMvc.perform(get("/api/v1/candidates")
+                        .param("skill", "java", "figma"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.length()").value(2));
+    }
+
     private String candidateJson(String email, String skills, int experienceYears) {
         return """
                 {

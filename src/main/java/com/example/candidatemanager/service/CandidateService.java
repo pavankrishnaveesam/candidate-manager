@@ -8,6 +8,7 @@ import com.example.candidatemanager.exception.DuplicateResourceException;
 import com.example.candidatemanager.exception.ResourceNotFoundException;
 import com.example.candidatemanager.repository.CandidateRepository;
 import com.example.candidatemanager.specification.CandidateSpecification;
+import java.util.List;
 import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +69,7 @@ public class CandidateService {
     @Transactional(readOnly = true)
     public Page<CandidateResponse> search(
             String keyword,
-            String skill,
+            List<String> skills,
             Integer minExperience,
             Integer maxExperience,
             String location,
@@ -79,7 +80,7 @@ public class CandidateService {
             throw new IllegalArgumentException("minExperience must not be greater than maxExperience");
         }
         return candidateRepository.findAll(
-                        CandidateSpecification.filter(keyword, skill, minExperience, maxExperience, location, status), pageable)
+                        CandidateSpecification.filter(keyword, skills, minExperience, maxExperience, location, status), pageable)
                 .map(this::toResponse);
     }
 

@@ -2,6 +2,8 @@ package com.example.candidatemanager.specification;
 
 import com.example.candidatemanager.entity.Candidate;
 import com.example.candidatemanager.entity.CandidateStatus;
+import jakarta.persistence.criteria.Predicate;
+import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 
 public final class CandidateSpecification {
@@ -11,7 +13,7 @@ public final class CandidateSpecification {
 
     public static Specification<Candidate> filter(
             String keyword,
-            String skill,
+            List<String> skills,
             Integer minExperience,
             Integer maxExperience,
             String location,
@@ -21,8 +23,8 @@ public final class CandidateSpecification {
         if (!isBlank(keyword)) {
             specification = specification.and(hasKeyword(keyword));
         }
-        if (!isBlank(skill)) {
-            specification = specification.and(hasSkill(skill));
+        if (hasValues(skills)) {
+            specification = specification.and(hasAnySkill(skills));
         }
         if (minExperience != null) {
             specification = specification.and(hasMinimumExperience(minExperience));
@@ -51,12 +53,14 @@ public final class CandidateSpecification {
         );
     }
 
-    private static Specification<Candidate> hasSkill(String skill) {
-        if (isBlank(skill)) {
-            return null;
-        }
-        return (root, query, builder) -> builder.like(
-                builder.lower(root.get("skills")), containsPattern(skill));
+    private static Specification<Candidate> hasAnySkill(List<String> skills) {
+        return (root, query, builder) -> {
+            List<Predicate> skillPredicates = skills.stream()
+                    .filter(skill -> !isBlank(skill))
+                    .map(skill -> builder.like(builder.lower(root.get("skills")), containsPattern(skill)))
+                    .toList();
+            return builder.or(skillPredicates.toArray(Predicate[]::new));
+        };
     }
 
     private static Specification<Candidate> hasMinimumExperience(Integer minExperience) {
@@ -94,5 +98,9 @@ public final class CandidateSpecification {
 
     private static boolean isBlank(String value) {
         return value == null || value.isBlank();
+    }
+
+    private static boolean hasValues(List<String> values) {
+        return values != null && values.stream().anyMatch(value -> !isBlank(value));
     }
 }
