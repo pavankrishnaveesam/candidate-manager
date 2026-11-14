@@ -6,19 +6,20 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 public record CandidateRequest(
-        @NotBlank String fullName,
-        @NotBlank String currentRole,
-        @NotBlank @Email String email,
+        @NotBlank @Size(max = 255) String fullName,
+        @NotBlank @Size(max = 255) String currentRole,
+        @NotBlank @Email @Size(max = 255) String email,
         @Pattern(
                 regexp = "^\\+?[0-9][0-9 ()-]{6,19}$",
                 message = "phone must contain 7 to 20 digits and may include spaces, parentheses, or hyphens"
         )
         String phone,
-        String skills,
+        @Size(max = 1000) String skills,
         @NotNull @Min(0) Integer experienceYears,
-        String location,
+        @Size(max = 255) String location,
         CandidateStatus status
 ) {
 }

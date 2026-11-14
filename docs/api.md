@@ -35,4 +35,6 @@ Filters combine with `AND`; repeated `skill` values combine with `OR`. Valid sta
 GET /candidates?q=sophia&skill=figma&skill=research&minExperience=5&location=San%20Francisco&status=INTERVIEW&page=0&size=20&sort=createdAt,desc
 ```
 
+`size` must be between 1 and 100. Results append `id,asc` as a secondary sort when the requested field is not `id`, keeping pagination deterministic when multiple candidates share the same primary sort value.
+
 Validation and request errors return `{ timestamp, status, message, fieldErrors }` with HTTP `400`; missing candidates return `404`; duplicate emails return `409`.

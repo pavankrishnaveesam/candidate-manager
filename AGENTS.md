@@ -3,7 +3,7 @@
 ## 1. Project Overview & Stack
 
 - **Language & Framework:** Java 21, Spring Boot 4.1.2, Apache Maven (`pom.xml`).
-- **Database:** File-based H2 (`jdbc:h2:file:./data/candidatesdb`) for zero-config persistence across restarts, using Spring Data JPA + Hibernate.
+- **Database:** PostgreSQL 17 in Docker for development, with Flyway schema migrations. Tests use isolated in-memory H2, using Spring Data JPA + Hibernate.
 - **Libraries:** Spring Web, Spring Data JPA, Jakarta Bean Validation (`spring-boot-starter-validation`), Lombok, JUnit 5, Mockito, MockMvc.
 - **No Spring Security:** Keep endpoints open for effortless evaluator testing.
 
@@ -42,7 +42,7 @@ Follow strict layered architecture under `com.example.candidatemanager` (adjust 
 
 - Write unit tests for `CandidateService` using JUnit 5 and Mockito.
 - Write integration tests for `CandidateController` using `@SpringBootTest` + `MockMvc` covering CRUD operations, multi-criteria filtering, duplicate email handling, and invalid input validation (`400 Bad Request`).
-- Run `mvn test` after generating code to verify everything compiles and passes.
+- Run `mvn verify` after generating code to verify everything compiles, tests pass, and the JaCoCo coverage threshold is met.
 
 ## 6. Token-Saving & Codex Workflow Rules
 

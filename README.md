@@ -13,7 +13,7 @@ The `dev` profile is the default. Flyway creates the schema, and the development
 
 ## Test
 
-Run `./mvnw.cmd test`. Tests use an isolated in-memory H2 database and never modify PostgreSQL.
+Run `./mvnw.cmd verify`. This runs tests against an isolated in-memory H2 database, generates the JaCoCo report, and enforces 90% line coverage for executable application code. Tests never modify PostgreSQL.
 
 ## API
 

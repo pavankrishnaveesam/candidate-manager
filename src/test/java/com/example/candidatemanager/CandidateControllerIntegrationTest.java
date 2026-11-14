@@ -81,6 +81,19 @@ class CandidateControllerIntegrationTest {
     }
 
     @Test
+    void createRejectsFieldsThatExceedDatabaseLimits() throws Exception {
+        String oversizedName = "a".repeat(256);
+
+        mockMvc.perform(post("/api/v1/candidates")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"fullName":"%s","currentRole":"Software Engineer","email":"ada@example.com","experienceYears":5}
+                                """.formatted(oversizedName)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.fieldErrors.fullName").exists());
+    }
+
+    @Test
     void createRejectsMissingRequestBody() throws Exception {
         mockMvc.perform(post("/api/v1/candidates")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -220,6 +233,10 @@ class CandidateControllerIntegrationTest {
 
         mockMvc.perform(get("/api/v1/candidates").param("page", "-1"))
                 .andExpect(status().isBadRequest());
+
+        mockMvc.perform(get("/api/v1/candidates").param("size", "101"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("size must be between 1 and 100"));
     }
 
     private long createCandidate(String email, String skills, int years, String location, CandidateStatus status)
