@@ -81,6 +81,24 @@ class CandidateControllerIntegrationTest {
     }
 
     @Test
+    void createRejectsMissingRequestBody() throws Exception {
+        mockMvc.perform(post("/api/v1/candidates")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Request body is required"))
+                .andExpect(jsonPath("$.fieldErrors").isEmpty());
+    }
+
+    @Test
+    void createRejectsMalformedJson() throws Exception {
+        mockMvc.perform(post("/api/v1/candidates")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{invalid-json}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Request body contains invalid JSON"));
+    }
+
+    @Test
     void getReturnsCandidateAndUnknownIdIsNotFound() throws Exception {
         long id = createCandidate("ada@example.com", "Java", 5, "Remote", CandidateStatus.INTERVIEW);
 

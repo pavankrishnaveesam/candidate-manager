@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,6 +29,14 @@ public class GlobalExceptionHandler {
                         LinkedHashMap::new
                 ));
         return respond(HttpStatus.BAD_REQUEST, "Validation failed", fieldErrors);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleUnreadableRequestBody(HttpMessageNotReadableException exception) {
+        String message = exception.getCause() == null
+                ? "Request body is required"
+                : "Request body contains invalid JSON";
+        return respond(HttpStatus.BAD_REQUEST, message, Map.of());
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -63,6 +72,9 @@ public class GlobalExceptionHandler {
     }
 
     private ResponseEntity<ErrorResponse> respond(HttpStatus status, String message, Map<String, String> fieldErrors) {
+        if (status.is4xxClientError()) {
+            log.warn("Request rejected with status {}: {}", status.value(), message);
+        }
         ErrorResponse response = new ErrorResponse(LocalDateTime.now(), status.value(), message, fieldErrors);
         return ResponseEntity.status(status).body(response);
     }
